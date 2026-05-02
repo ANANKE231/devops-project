@@ -61,19 +61,19 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install app dependencies
-        run: pip install -r requirements.txt
-
-      - name: Simulate Blue-Green Deploy
-        run: bash scripts/deploy.sh ${{ github.sha }}
-
-      - name: Run health check
+      - run: pip install -r requirements.txt
+      - name: Start app (Blue slot)
         run: |
-          sleep 2
-          bash scripts/health_check.sh || echo "Health check complete"
+          APP_ENV=production APP_VERSION=${{ github.sha }} PORT=5001 python3 app/app.py &
+          sleep 3
+      - name: Health check
+        run: |
+          curl -f http://localhost:5001/health
+          echo "✅ Health check passed"
+      - name: Simulate traffic switch (Green slot)
+        run: |
+          echo "🔀 Switching traffic to green slot"
+          echo "✅ Blue-Green deploy complete for version ${{ github.sha }}"
