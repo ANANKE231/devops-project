@@ -23,6 +23,7 @@ A Python/Flask web app with a full DevOps pipeline — CI/CD, Blue-Green deploym
 devops-project/
 ├── app/app.py                  # Flask app
 ├── tests/test_app.py           # Unit tests (8 tests)
+├── docs/                       # Screenshots
 ├── .github/workflows/ci-cd.yml # CI/CD pipeline
 ├── ansible/setup.yml           # IaC playbook
 ├── scripts/
@@ -32,8 +33,6 @@ devops-project/
 ├── setup.sh                    # One-command setup
 └── requirements.txt
 ```
-
----
 
 ## CI/CD Workflow
 
